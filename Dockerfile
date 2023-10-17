@@ -22,10 +22,10 @@ USER moonlight
 WORKDIR /home/moonlight
 
 # Install Tizen Studio
-# get file: web-cli_Tizen_Studio_5.0_ubuntu-64.bin
-RUN wget -nv -O web-cli_Tizen_Studio_5.0_ubuntu-64.bin 'https://download.tizen.org/sdk/Installer/tizen-studio_5.0/web-cli_Tizen_Studio_5.0_ubuntu-64.bin'
-RUN chmod a+x web-cli_Tizen_Studio_5.0_ubuntu-64.bin
-RUN ./web-cli_Tizen_Studio_5.0_ubuntu-64.bin --accept-license /home/moonlight/tizen-studio
+# get file: web-cli_Tizen_Studio_5.1_ubuntu-64.bin
+RUN wget -nv -O web-cli_Tizen_Studio_5.1_ubuntu-64.bin 'https://download.tizen.org/sdk/Installer/tizen-studio_5.1/web-cli_Tizen_Studio_5.1_ubuntu-64.bin'
+RUN chmod a+x web-cli_Tizen_Studio_5.1_ubuntu-64.bin
+RUN ./web-cli_Tizen_Studio_5.1_ubuntu-64.bin --accept-license /home/moonlight/tizen-studio
 ENV PATH=/home/moonlight/tizen-studio/tools/ide/bin:/home/moonlight/tizen-studio/tools:${PATH}
 
 # Prepare Tizen signing cerficates
@@ -79,16 +79,14 @@ RUN echo \
 | expect
 
 # Optional; remove unneed files
-RUN mv build/widget/MoonlightWasm.wgt .
-# RUN sdb connect 192.168.0.228
-# RUN tizen install -n MoonlightWasm.wgt -t QN55Q65BAGC
+RUN mv build/widget/Moonlight.wgt .
 #RUN rm -rf \
 #	build \
 #	emscripten-1.39.4.7-linux64.zip \
 #	emscripten-release-bundle \
 #	moonlight-chrome-tizen \
 #	tizen-package-expect.sh \
-#	web-cli_Tizen_Studio_5.0_ubuntu-64.bin \
+#	web-cli_Tizen_Studio_5.1_ubuntu-64.bin \
 #	.emscripten \
 #	.emscripten_cache \
 #	.emscripten_cache.lock \ 
