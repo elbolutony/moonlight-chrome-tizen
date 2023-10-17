@@ -3,10 +3,10 @@
     <access origin="*"></access>
     <tizen:application id="MoonLightS.MoonlightWasm" package="MoonLightS" required_version="5.5" launch_mode="caller"/>
     <content src="index.html"/>
-    <description>MoonlightWasm</description>
+    <description>Moonlight Game Streaming</description>
     <feature name="http://tizen.org/feature/screen.size.all"/>
     <icon src="./icons/icon128.png"/>
-    <name>MoonlightWasm</name>
+    <name>Moonlight</name>
     <tizen:privilege name="http://tizen.org/privilege/unlimitedstorage"/>
     <tizen:privilege name="http://tizen.org/privilege/filesystem.write"/>
     <tizen:privilege name="http://tizen.org/privilege/tv.inputdevice"/>
