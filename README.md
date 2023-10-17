@@ -1,4 +1,4 @@
-# About
+## About
 The only method for building Moonlight for Tizen OS (Samsung Smart TV's)
 
 ## Usage
@@ -44,6 +44,10 @@ The only method for building Moonlight for Tizen OS (Samsung Smart TV's)
 	 ```sh
 	 docker image rm moonlight-tizen
 	 ```
+
+## Changelog
+
+See the [CHANGELOD.md](https://github.com/ndriqimlahu/moonlight-chrome-tizen/blob/samsung_wasm/CHANGELOG.md) file for more information about the changes for each version of this project.
 
 ## Credits
 - Moonlight for Chrome OS is developed and maintained by [Moonlight Developers](https://github.com/moonlight-stream/moonlight-chrome)
