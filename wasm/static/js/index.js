@@ -261,7 +261,6 @@ function pairTo(nvhttpHost, onSuccess, onFailure) {
 }
 
 function hostChosen(host) {
-
   if (!host.online) {
     return;
   }
@@ -333,10 +332,8 @@ function addHost() {
   });
 }
 
-
 // host is an NvHTTP object
 function addHostToGrid(host, ismDNSDiscovered) {
-
   var outerDiv = $("<div>", {
     class: 'host-container mdl-card mdl-shadow--4dp',
     id: 'host-container-' + host.serverUid,
@@ -589,7 +586,6 @@ function showAppsMode() {
   stopPollingHosts();
 }
 
-
 // start the given appID.  if another app is running, offer to quit it.
 // if the given app is already running, just resume it.
 function startGame(host, appID) {
@@ -837,8 +833,6 @@ function saveFramerate() {
   updateDefaultBitrate();
 }
 
-
-
 // storing data in chrome.storage takes the data as an object, and shoves it into JSON to store
 // unfortunately, objects with function instances (classes) are stripped of their function instances when converted to a raw object
 // so we cannot forget to revive the object after we load it.
@@ -974,6 +968,5 @@ function onWindowLoad() {
     });
   }
 }
-
 
 window.onload = onWindowLoad;

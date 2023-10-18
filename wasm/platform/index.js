@@ -293,7 +293,6 @@ function pairTo(nvhttpHost, onSuccess, onFailure) {
 }
 
 function hostChosen(host) {
-
   if (!host.online) {
     return;
   }
@@ -373,7 +372,6 @@ function addHost() {
 
 // host is an NvHTTP object
 function addHostToGrid(host, ismDNSDiscovered) {
-
   var outerDiv = $("<div>", {
     class: 'host-container mdl-card mdl-shadow--4dp',
     id: 'host-container-' + host.serverUid,
@@ -1089,8 +1087,6 @@ function saveFramerate() {
   updateDefaultBitrate();
   Navigation.pop();
 }
-
-
 
 // storing data in chrome.storage takes the data as an object, and shoves it into JSON to store
 // unfortunately, objects with function instances (classes) are stripped of their function instances when converted to a raw object

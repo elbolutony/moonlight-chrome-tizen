@@ -8,8 +8,7 @@
 #include <emscripten/emscripten.h>
 
 // On XBox controller this is start+menu+left trigger+right trigger
-const short STOP_STREAM_BUTTONS_FLAGS =
-    LB_FLAG | RB_FLAG | PLAY_FLAG | BACK_FLAG;
+const short STOP_STREAM_BUTTONS_FLAGS = LB_FLAG | RB_FLAG | PLAY_FLAG | BACK_FLAG;
 
 // For explanation on ordering, see: https://www.w3.org/TR/gamepad/#remapping
 enum GamepadAxis {
@@ -43,16 +42,15 @@ static short GetButtonFlags(const EmscriptenGamepadEvent& gamepad) {
   // need to be passed in separate arguments for Limelight (it even lacks flags
   // for them).
   static const int buttonMasks[] {
-      A_FLAG, B_FLAG, X_FLAG, Y_FLAG,
-      LB_FLAG, RB_FLAG,
-      0 /* LTRIGGER */, 0 /* RTRIGGER */,
-      BACK_FLAG, PLAY_FLAG,
-      LS_CLK_FLAG, RS_CLK_FLAG,
-      UP_FLAG, DOWN_FLAG, LEFT_FLAG, RIGHT_FLAG,
-      SPECIAL_FLAG,
+    A_FLAG, B_FLAG, X_FLAG, Y_FLAG,
+    LB_FLAG, RB_FLAG,
+    0 /* LTRIGGER */, 0 /* RTRIGGER */,
+    BACK_FLAG, PLAY_FLAG,
+    LS_CLK_FLAG, RS_CLK_FLAG,
+    UP_FLAG, DOWN_FLAG, LEFT_FLAG, RIGHT_FLAG,
+    SPECIAL_FLAG,
   };
-  static const int buttonMasksSize =
-    static_cast<int>(sizeof(buttonMasks) / sizeof(buttonMasks[0]));
+  static const int buttonMasksSize = static_cast<int>(sizeof(buttonMasks) / sizeof(buttonMasks[0]));
 
   short result = 0;
   for (int i = 0; i < gamepad.numButtons && i < buttonMasksSize; ++i) {
@@ -68,17 +66,18 @@ void MoonlightInstance::PollGamepads() {
     std::cerr << "Sample gamepad data failed!\n";
     return;
   }
+
   const auto numGamepads = emscripten_get_num_gamepads();
   if (numGamepads == EMSCRIPTEN_RESULT_NOT_SUPPORTED) {
     std::cerr << "Get num gamepads failed!\n";
     return;
   }
+
   const auto activeGamepadMask = GetActiveGamepadMask(numGamepads);
   for (int gamepadID = 0; gamepadID < numGamepads; ++gamepadID) {
     emscripten_sample_gamepad_data();
     EmscriptenGamepadEvent gamepad;
-    const auto result = emscripten_get_gamepad_status(gamepadID,
-                                                      &gamepad);
+    const auto result = emscripten_get_gamepad_status(gamepadID, &gamepad);
     if (result != EMSCRIPTEN_RESULT_SUCCESS || !gamepad.connected) {
       continue;
     }
@@ -98,13 +97,13 @@ void MoonlightInstance::PollGamepads() {
       * std::numeric_limits<short>::max();
 
     if (buttonFlags == STOP_STREAM_BUTTONS_FLAGS) {
-        PostToJs(std::string("stopping stream, button flags is ") + std::to_string(buttonFlags));
-        stopStream();
-        return;
+      PostToJs(std::string("stopping stream, button flags is ") + std::to_string(buttonFlags));
+      stopStream();
+      return;
     }
 
     LiSendMultiControllerEvent(
-        gamepadID, activeGamepadMask, buttonFlags, leftTrigger,
-        rightTrigger, leftStickX, leftStickY, rightStickX, rightStickY);
+      gamepadID, activeGamepadMask, buttonFlags, leftTrigger,
+      rightTrigger, leftStickX, leftStickY, rightStickX, rightStickY);
   }
 }
