@@ -215,7 +215,7 @@ function pairTo(nvhttpHost, onSuccess, onFailure) {
 
   nvhttpHost.pollServer(function(ret) {
     if (!nvhttpHost.online) {
-      snackbarLog('Failed to connect to ' + nvhttpHost.hostname + '! Ensure that GameStream is enabled in GeForce Experience.');
+      snackbarLog('Failed to connect to ' + nvhttpHost.hostname + '! Ensure that Sunshine is started or GameStream is enabled in GeForce Experience.');
       console.error('%c[index.js]', 'color: green;', 'Host declared as offline:', nvhttpHost, nvhttpHost.toString()); //Logging both the object and the toString version for text logs
       onFailure();
       return;
@@ -234,7 +234,7 @@ function pairTo(nvhttpHost, onSuccess, onFailure) {
 
     var randomNumber = String("0000" + cryptoRand(10000)).slice(-4);
     var pairingDialog = document.querySelector('#pairingDialog');
-    $('#pairingDialogText').html('Please enter the number ' + randomNumber + ' on the GFE dialog on the computer.  This dialog will be dismissed once complete');
+    $('#pairingDialogText').html('Please enter the ' + randomNumber + ' numbers in the Sunshine or GeForce Experience dialog on your host computer.  This dialog will close once the pairing is complete.');
     pairingDialog.showModal();
 
     $('#cancelPairingDialog').off('click');
@@ -327,7 +327,7 @@ function addHost() {
       }
     }.bind(this),
     function(failure) {
-      snackbarLog('Failed to connect to ' + _nvhttpHost.hostname + '! Ensure that GameStream is enabled in GeForce Experience.');
+      snackbarLog('Failed to connect to ' + _nvhttpHost.hostname + '! Ensure that Sunshine is started or GameStream is enabled in GeForce Experience.');
     }.bind(this));
   });
 }

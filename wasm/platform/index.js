@@ -250,7 +250,7 @@ function pairTo(nvhttpHost, onSuccess, onFailure) {
 
   nvhttpHost.pollServer(function(ret) {
     if (!nvhttpHost.online) {
-      snackbarLog('Failed to connect to ' + nvhttpHost.hostname + '! Ensure that GameStream is enabled in GeForce Experience.');
+      snackbarLog('Failed to connect to ' + nvhttpHost.hostname + '! Ensure that Sunshine is started or GameStream is enabled in GeForce Experience.');
       console.error('%c[index.js]', 'color: green;', 'Host declared as offline:', nvhttpHost, nvhttpHost.toString()); //Logging both the object and the toString version for text logs
       onFailure();
       return;
@@ -263,7 +263,7 @@ function pairTo(nvhttpHost, onSuccess, onFailure) {
 
     var randomNumber = String("0000" + (Math.random() * 10000 | 0)).slice(-4);
     var pairingDialog = document.querySelector('#pairingDialog');
-    $('#pairingDialogText').html('Please enter the number ' + randomNumber + ' on the GFE dialog on the computer.  This dialog will be dismissed once complete');
+    $('#pairingDialogText').html('Please enter the ' + randomNumber + ' numbers in the Sunshine or GeForce Experience dialog on your host computer.  This dialog will close once the pairing is complete.');
     pairingDialog.showModal();
     Navigation.push(Views.PairingDialog);
 
@@ -364,7 +364,7 @@ function addHost() {
       }
     }.bind(this),
     function(failure) {
-      snackbarLog('Failed to connect to ' + _nvhttpHost.hostname + '! Ensure that GameStream is enabled in GeForce Experience.');
+      snackbarLog('Failed to connect to ' + _nvhttpHost.hostname + '! Ensure that Sunshine is started or GameStream is enabled in GeForce Experience.');
     }.bind(this));
   });
 }
@@ -909,7 +909,7 @@ function openIndexDB(callback) {
         console.log("Storage may be cleared by the UA under storage pressure.");
     });
   } else {
-    console.log('Persistent storage not avaialable');
+    console.log('Persistent storage not available');
   }
 
   if (!indexedDB) {
@@ -986,7 +986,7 @@ function getData(key, callbackFunction) {
       };
 
       transaction.onerror = function(e) {
-        console.error('Erorr reading data at key: "' + key +
+        console.error('Error reading data at key: "' + key +
                       '" from IndexDB: ' + e);
         callCb(key, value, callbackFunction);
       };
@@ -1019,7 +1019,7 @@ function storeData(key, data, callbackFunction) {
       // Open a transaction to the database
       const transaction = db.transaction(storeName, 'readwrite');
 
-      // Put the text into the dabase
+      // Put the text into the database
       const put = transaction.objectStore(storeName).put(
                   JSON.stringify(data), key);
 
@@ -1031,7 +1031,7 @@ function storeData(key, data, callbackFunction) {
       };
 
       transaction.onerror = function(e) {
-        console.error('Erorr storing data in IndexDB: ' + e);
+        console.error('Error storing data in IndexDB: ' + e);
       };
     } catch (e) {
       console.log('storeData: caught exception while storing key:' + key);
@@ -1067,7 +1067,7 @@ function saveOptimize() {
 function saveFramePacing() {
   setTimeout(function() {
     const chosenFramePacing = $("#framePacingSwitch").parent().hasClass('is-checked');
-    console.log('%c[index.js, saveFramePacing]', 'color: green;', 'Saving framePacing state : ' + chosenFramePacing);
+    console.log('%c[index.js, saveFramePacing]', 'color: green;', 'Saving frame pacing state : ' + chosenFramePacing);
     storeData('framePacing', chosenFramePacing, null);
   }, 100);
 }
