@@ -7,7 +7,7 @@ Check out the [Moonlight wiki](https://github.com/moonlight-stream/moonlight-doc
 
 ## Getting Started
 
-Starting with the project, you should first take a look at the required [Prerequisites](https://github.com/ndriqimlahu/moonlight-chrome-tizen/edit/samsung_wasm/README.md#prerequisites) and then follow the [Building](https://github.com/ndriqimlahu/moonlight-chrome-tizen/edit/samsung_wasm/README.md#building) instructions in order to successfully install Moonlight on your Samsung Smart TV which has Tizen OS.
+Starting with the project, you should first take a look at the required [Prerequisites](https://github.com/ndriqimlahu/moonlight-chrome-tizen#prerequisites) and then follow the [Building](https://github.com/ndriqimlahu/moonlight-chrome-tizen#building) instructions in order to successfully install Moonlight on your Samsung Smart TV which has Tizen OS.
 
 ### Prerequisites
 
@@ -71,7 +71,7 @@ Also, you should run "Docker Desktop" before proceeding further and it is also r
 ### Updating
 
 1. Before updating the Moonlight app, you must delete the installed Moonlight app that you already have on your Samsung Smart TV to prevent errors during the update.
-2. Now, whenever you want to install an updated version of Moonlight on your Samsung Smart TV, you need to follow the [Building](https://github.com/ndriqimlahu/moonlight-chrome-tizen/edit/samsung_wasm/README.md#building) instructions in order to successfully update Moonlight on your Samsung Smart TV which has Tizen OS.
+2. Now, whenever you want to install an updated version of Moonlight on your Samsung Smart TV, you need to follow the [Building](https://github.com/ndriqimlahu/moonlight-chrome-tizen#building) instructions in order to successfully update Moonlight on your Samsung Smart TV which has Tizen OS.
 
 ## Changelogs
 
