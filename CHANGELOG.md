@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.0.3
+
+### Added
+- Expanded settings: Introduced '480p' resolution option
+
+### Changed
+- Updated default bitrate and resolution settings from 720p to 1080p
+
+### Fixed
+- Fixed bitrate presets for '480p' resolution option
+
 ## v1.0.2
 
 ### Changed
