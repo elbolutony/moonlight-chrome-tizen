@@ -8,7 +8,7 @@
 #include <emscripten/emscripten.h>
 
 // On XBox controller this is start+menu+left trigger+right trigger
-const short STOP_STREAM_BUTTONS_FLAGS = LB_FLAG | RB_FLAG | PLAY_FLAG | BACK_FLAG;
+const short STOP_STREAM_BUTTONS_FLAGS = LB_FLAG | RB_FLAG | BACK_FLAG | PLAY_FLAG;
 
 // For explanation on ordering, see: https://www.w3.org/TR/gamepad/#remapping
 enum GamepadAxis {
