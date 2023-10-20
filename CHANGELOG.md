@@ -2,13 +2,26 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.0.4
+
+### Added
+- Added comments to improve code clarity and understanding
+
+### Changed
+- Updated '480p' resolution setting
+- Updated default bitrate setting to '20 Mbps'
+- Reordered 'STOP_STREAM_BUTTONS_FLAGS' buttons
+
+### Fixed
+- Fixed gamepad button mapping issue: Swapped 'Y' and 'X' buttons
+
 ## v1.0.3
 
 ### Added
 - Expanded settings: Introduced '480p' resolution option
 
 ### Changed
-- Updated default bitrate and resolution settings from 720p to 1080p
+- Updated default bitrate and resolution settings from '720p' to '1080p'
 
 ### Fixed
 - Fixed bitrate presets for '480p' resolution option
