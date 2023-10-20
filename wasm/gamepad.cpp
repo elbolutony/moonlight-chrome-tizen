@@ -7,10 +7,11 @@
 #include <Limelight.h>
 #include <emscripten/emscripten.h>
 
-// On XBox controller this is start+menu+left trigger+right trigger
+// Define a combination of buttons on the Xbox controller to stop streaming
 const short STOP_STREAM_BUTTONS_FLAGS = LB_FLAG | RB_FLAG | BACK_FLAG | PLAY_FLAG;
 
 // For explanation on ordering, see: https://www.w3.org/TR/gamepad/#remapping
+// Enumeration for gamepad axes
 enum GamepadAxis {
   LeftX = 0,
   LeftY = 1,
@@ -18,6 +19,7 @@ enum GamepadAxis {
   RightY = 3,
 };
 
+// Enumeration for gamepad buttons
 enum GamepadButton {
   A, B, Y, X, /* Change buttons as Y, X, to prevent swapping */
   LeftShoulder, RightShoulder,
@@ -29,6 +31,7 @@ enum GamepadButton {
   Count,
 };
 
+// Function to create a mask for active gamepads
 static short GetActiveGamepadMask(int numGamepads) {
   short result = 0;
   for (int i = 0; i < numGamepads; ++i) {
@@ -37,19 +40,23 @@ static short GetActiveGamepadMask(int numGamepads) {
   return result;
 }
 
+// Function to map gamepad buttons to flags
 static short GetButtonFlags(const EmscriptenGamepadEvent& gamepad) {
   // Triggers are considered analog buttons in Emscripten API, however they
   // need to be passed in separate arguments for Limelight (it even lacks flags
   // for them).
+
+  // Define button mappings
   static const int buttonMasks[] {
     A_FLAG, B_FLAG, Y_FLAG, X_FLAG, /* Change buttons as Y_FLAG, X_FLAG, to prevent swapping */
     LB_FLAG, RB_FLAG,
-    0 /* LTRIGGER */, 0 /* RTRIGGER */,
+    0 /* LEFT_TRIGGER */, 0 /* RIGHT_TRIGGER */,
     BACK_FLAG, PLAY_FLAG,
     LS_CLK_FLAG, RS_CLK_FLAG,
     UP_FLAG, DOWN_FLAG, LEFT_FLAG, RIGHT_FLAG,
     SPECIAL_FLAG,
   };
+  
   static const int buttonMasksSize = static_cast<int>(sizeof(buttonMasks) / sizeof(buttonMasks[0]));
 
   short result = 0;
@@ -61,6 +68,7 @@ static short GetButtonFlags(const EmscriptenGamepadEvent& gamepad) {
   return result;
 }
 
+// Function to poll gamepad input
 void MoonlightInstance::PollGamepads() {
   if (emscripten_sample_gamepad_data() != EMSCRIPTEN_RESULT_SUCCESS) {
     std::cerr << "Sample gamepad data failed!\n";
@@ -73,13 +81,16 @@ void MoonlightInstance::PollGamepads() {
     return;
   }
 
+  // Create a mask for active gamepads
   const auto activeGamepadMask = GetActiveGamepadMask(numGamepads);
+
+  // Iterate through connected gamepads and process their input
   for (int gamepadID = 0; gamepadID < numGamepads; ++gamepadID) {
     emscripten_sample_gamepad_data();
     EmscriptenGamepadEvent gamepad;
     const auto result = emscripten_get_gamepad_status(gamepadID, &gamepad);
     if (result != EMSCRIPTEN_RESULT_SUCCESS || !gamepad.connected) {
-      continue;
+      continue; /* Skip disconnected gamepads */
     }
 
     const auto buttonFlags = GetButtonFlags(gamepad);
@@ -102,6 +113,7 @@ void MoonlightInstance::PollGamepads() {
       return;
     }
 
+    // Send gamepad input to the desired handler
     LiSendMultiControllerEvent(
       gamepadID, activeGamepadMask, buttonFlags, leftTrigger,
       rightTrigger, leftStickX, leftStickY, rightStickX, rightStickY);
