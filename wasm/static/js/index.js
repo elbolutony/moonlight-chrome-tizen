@@ -970,7 +970,7 @@ function onWindowLoad() {
 
     // load stored bitrate prefs
     chrome.storage.sync.get('bitrate', function(previousValue) {
-      $('#bitrateSlider')[0].MaterialSlider.change(previousValue.bitrate != null ? previousValue.bitrate : '10');
+      $('#bitrateSlider')[0].MaterialSlider.change(previousValue.bitrate != null ? previousValue.bitrate : '20');
       updateBitrateField();
     });
   }

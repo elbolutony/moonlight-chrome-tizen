@@ -1258,7 +1258,7 @@ function loadUserDataCb() {
 
   console.log('load stored bitrate prefs');
   getData('bitrate', function(previousValue) {
-    $('#bitrateSlider')[0].MaterialSlider.change(previousValue.bitrate != null ? previousValue.bitrate : '10');
+    $('#bitrateSlider')[0].MaterialSlider.change(previousValue.bitrate != null ? previousValue.bitrate : '20');
     updateBitrateField();
   });
 }
