@@ -19,7 +19,7 @@ enum GamepadAxis {
 };
 
 enum GamepadButton {
-  A, B, X, Y,
+  A, B, Y, X, /* Change buttons as Y, X, to prevent swapping */
   LeftShoulder, RightShoulder,
   LeftTrigger, RightTrigger,
   Back, Play,
@@ -42,7 +42,7 @@ static short GetButtonFlags(const EmscriptenGamepadEvent& gamepad) {
   // need to be passed in separate arguments for Limelight (it even lacks flags
   // for them).
   static const int buttonMasks[] {
-    A_FLAG, B_FLAG, X_FLAG, Y_FLAG,
+    A_FLAG, B_FLAG, Y_FLAG, X_FLAG, /* Change buttons as Y_FLAG, X_FLAG, to prevent swapping */
     LB_FLAG, RB_FLAG,
     0 /* LTRIGGER */, 0 /* RTRIGGER */,
     BACK_FLAG, PLAY_FLAG,
