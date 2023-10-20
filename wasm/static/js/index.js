@@ -869,7 +869,7 @@ function updateDefaultBitrate() {
   var frameRate = $('#selectFramerate').data('value').toString();
 
   // These quality presets include video resolution like 480p, 720p, 1080p, 1440p, 2160p (4K) and video frame rate like 30 FPS and 60 FPS
-  if (res === "854:480") {
+  if (res === "858:480") {
     if (frameRate === "30") { // 480p, 30 FPS
       $('#bitrateSlider')[0].MaterialSlider.change('2');
     } else { // 480p, 60 FPS
