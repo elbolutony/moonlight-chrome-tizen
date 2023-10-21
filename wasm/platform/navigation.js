@@ -95,6 +95,9 @@ const Views = {
         element.children[0].click();
       }
     },
+    back: function() {
+      showTerminateMoonlightDialog(); /* Show the dialog and push the view */
+    },
     enter: function() {
       mark(this.view.current());
     },
@@ -342,6 +345,32 @@ const Views = {
     },
     back: function() {
       document.getElementById('cancelQuitApp').click();
+    },
+    enter: function() {
+      mark(this.view.current());
+    },
+    leave: function() {
+      unmark(this.view.current());
+    },
+  },
+  TerminateMoonlightDialog: {
+    view: new ListView(() => [
+      'exitTerminateMoonlight',
+      'cancelTerminateMoonlight']),
+    left: function() {
+      this.view.prev();
+    },
+    right: function() {
+      this.view.next();
+    },
+    down: function() {
+      document.getElementById('exitTerminateMoonlight').click();
+    },
+    accept: function() {
+      document.getElementById(this.view.current()).click();
+    },
+    back: function() {
+      document.getElementById('cancelTerminateMoonlight').click();
     },
     enter: function() {
       mark(this.view.current());
