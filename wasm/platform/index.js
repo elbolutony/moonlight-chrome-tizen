@@ -5,6 +5,7 @@ var myUniqueid = '0123456789ABCDEF'; // Use the same UID as other Moonlight clie
 var api; // `api` should only be set if we're in a host-specific screen. on the initial screen it should always be null.
 var isInGame = false; // flag indicating whether the game stream started
 var windowState = 'normal'; // chrome's windowState, possible values: 'normal' or 'fullscreen'
+var isDialogOpen = false; // track whether the dialog is open
 
 // Called by the common.js module.
 function attachListeners() {
@@ -443,6 +444,68 @@ function removeClicked(host) {
     saveHosts();
     deleteHostDialog.close();
     Navigation.pop();
+  });
+}
+
+// Function to create and show the Terminate Moonlight dialog
+function showTerminateMoonlightDialog() {
+  // Find the existing dialog element
+  var terminateMoonlightDialog = document.querySelector('#terminateMoonlightDialog');
+  
+  if (!terminateMoonlightDialog) {
+    // If the dialog element doesn't exist, create it
+    var terminateMoonlightDialog = document.createElement('dialog');
+    terminateMoonlightDialog.id = 'terminateMoonlightDialog';
+    terminateMoonlightDialog.classList.add('mdl-dialog');
+
+    // Create the dialog content
+    terminateMoonlightDialog.innerHTML = `
+      <h3 class="mdl-dialog__title">Exit Moonlight</h3>
+      <div class="mdl-dialog__content">
+        <p id="terminateMoonlightDialogText">
+          Are you sure you want to exit Moonlight?
+        </p>
+      </div>
+      <div class="mdl-dialog__actions">
+        <button type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect" id="cancelTerminateMoonlight">Cancel</button>
+        <button type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect" id="exitTerminateMoonlight">Exit</button>
+      </div>
+    `;
+
+    // Append the dialog to the DOM
+    document.body.appendChild(terminateMoonlightDialog);
+
+    // Initialize the dialog
+    componentHandler.upgradeElements(terminateMoonlightDialog);
+  }
+
+  // Show the dialog and push the view
+  terminateMoonlightDialog.showModal();
+  Navigation.push(Views.TerminateMoonlightDialog);
+
+  // Set the dialog as open
+  isDialogOpen = true;
+
+  // Close the dialog if the Cancel button is pressed
+  $('#cancelTerminateMoonlight').off('click');
+  $('#cancelTerminateMoonlight').on('click', function() {
+    terminateMoonlightDialog.close();
+    // Remove the dialog from the DOM if the dialog is open
+    document.body.removeChild(terminateMoonlightDialog);
+    isDialogOpen = false;
+    Navigation.pop();
+    Navigation.change(Views.Hosts);
+  });
+
+  // Terminate the application if the Exit button is pressed
+  $('#exitTerminateMoonlight').off('click');
+  $('#exitTerminateMoonlight').on('click', function() {
+    terminateMoonlightDialog.close();
+    // Remove the dialog from the DOM if the dialog is open
+    document.body.removeChild(terminateMoonlightDialog);
+    isDialogOpen = false;
+    Navigation.pop();
+    tizen.application.getCurrentApplication().exit();
   });
 }
 
