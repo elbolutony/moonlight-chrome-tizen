@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.0.5
+
+### Added
+- Introduced a new feature: 'Terminate Moonlight' dialog
+- Implemented dynamic handling for 'Terminate Moonlight' dialog
+- Show 'Terminate Moonlight' dialog via 'Back' button on 'Hosts' view
+
 ## v1.0.4
 
 ### Added
