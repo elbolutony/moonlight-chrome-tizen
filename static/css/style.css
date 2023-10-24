@@ -349,3 +349,12 @@ main {
     width: 48%;
     margin: 0 10px 20px 0;
 }
+#continueAddHost:focus, #cancelAddHost:focus,
+#continueDeleteHost:focus, #cancelDeleteHost:focus,
+#cancelPairingDialog:focus, #removeHostButton:focus,
+#backIcon:focus, #quitCurrentApp:focus,
+#continueQuitApp:focus, #cancelQuitApp:focus,
+#exitTerminateMoonlight:focus, #cancelTerminateMoonlight:focus {
+    background-color: #404354;
+    box-shadow: rgba(0, 163, 198, 1) 0px 0px 2px 4px;
+}
