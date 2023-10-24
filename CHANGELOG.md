@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.0.6
+
+### Added
+- Adjusted dialog buttons to increase their size
+- Enhanced button focus styles for better appearance
+
+### Changed
+- Adjusted the width of dialogs application-wide
+- Adjusted padding for title and content text in dialogs
+- Increased the width of the input field in the 'Add Host' dialog
+
 ## v1.0.5
 
 ### Added
