@@ -119,6 +119,7 @@ main {
     color: rgba(255, 255, 255, 0.90);
 }
 .mdl-textfield__input {
+    width: 152%;
     border-bottom: 1px solid rgba(255, 255, 255, 0.90);
 }
 .mdl-textfield__label {
