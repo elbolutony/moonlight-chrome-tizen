@@ -18,15 +18,12 @@ span.mdl-layout-title > span {
     font-weight: 900;
     color: #00A3C6;
 }
-
 .mdl-layout__header-row {
     padding: 0 80px 0 80px;
 }
-
 main {
     padding: 0 80px 0 80px;
 }
-
 @media screen and (max-width: 600px) {
     #host-grid .mdl-card {
         flex-basis: 50% !important;
@@ -36,7 +33,6 @@ main {
         width: 75px !important;
     }
 }
-
 @media screen and (min-width: 600px) and (max-width: 800px) {
     #host-grid .mdl-card {
         flex-basis: 33% !important;
@@ -46,7 +42,6 @@ main {
         width: 112.5px !important;
     }
 }
-
 @media screen and (min-width: 800px) and (max-width: 1024px) {
     main {
         padding: 0 72px 0 72px !important;
@@ -62,14 +57,12 @@ main {
         width: 150px !important;
     }
 }
-
 @media screen and (min-width: 1024px) {
     #game-grid .mdl-card {
         height: 300px !important;
         width: 225px !important;
     }
 }
-
 .nav-menu-parent {
     position: relative;
     margin: 0 4px;
@@ -93,7 +86,6 @@ main {
 .bitrateMenu {
     width: 170px;
 }
-
 .mdl-button {
     color: #fff !important;
 }
@@ -113,7 +105,7 @@ main {
     cursor: pointer;
 }
 .mdl-dialog {
-    width: 400px;
+    width: 500px;
     background-color: #333846;
     color: white;
 }
@@ -321,18 +313,4 @@ main {
 }
 .cancel-current .game-title {
     color: #fff;
-}
-
-.hovered {
-    background-color: rgba(158,158,158,.2);
-}
-
-.mdl-card.hovered {
-    background-color: initial;
-    transform: scale(1.1);
-    outline-color: #00A3C6;
-}
-
-#host-grid .mdl-shadow--4dp {
-    box-shadow: unset;
 }
