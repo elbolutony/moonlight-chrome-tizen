@@ -2,16 +2,27 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.0.7
+
+### Added
+- Enhanced card hover styles for better appearance
+
+### Changed
+- Aligned 'Add Host' and 'Hosts PC' text to the center
+- Increased the font size application-wide for better readability
+- Changed the text content in the 'Pairing' dialog for better clarity
+- Improved the readability of dialog texts and snack bar logs
+
 ## v1.0.6
 
 ### Added
-- Adjusted dialog buttons to increase their size
 - Enhanced button focus styles for better appearance
 
 ### Changed
 - Adjusted the width of dialogs application-wide
 - Adjusted padding for title and content text in dialogs
 - Increased the width of the input field in the 'Add Host' dialog
+- Adjusted dialog buttons to increase their size
 
 ## v1.0.5
 
