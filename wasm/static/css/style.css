@@ -207,6 +207,9 @@ main {
     background-color: rgba(0,0,0,0.7);
     justify-content: center;
 }
+#host-grid .mdl-shadow--4dp {
+    box-shadow: unset;
+}
 #game-grid .mdl-card img {
     height: 100%;
     width: 100%;
@@ -234,13 +237,19 @@ main {
 }
 .add-host-card > .mdl-card__title {
     color: #fff;
-    background:
-            url('../res/ic_add_to_queue_white_48px.svg') center no-repeat #3E4454;
+    background: url('../res/ic_add_to_queue_white_48px.svg') center no-repeat #3E4454;
 }
 .host-container > .mdl-card__title {
     color: #fff;
-    background:
-            url('../res/ic_tv_white_48px.svg') center no-repeat #3E4454;
+    background: url('../res/ic_tv_white_48px.svg') center no-repeat #3E4454;
+}
+.mdl-card.hovered {
+    background-color: initial;
+    transform: scale(1.1);
+    outline-color: #00A3C6;
+}
+.hovered {
+    background-color: rgba(158,158,158,.2);
 }
 #host-grid p {
     margin: 0;
