@@ -13,9 +13,11 @@ body {
 }
 span.mdl-layout-title {
     font-weight: 300;
+    font-size: 24px;
 }
 span.mdl-layout-title > span {
     font-weight: 900;
+    font-size: 24px;
     color: #00A3C6;
 }
 .mdl-layout__header-row {
@@ -73,9 +75,13 @@ main {
 }
 .mdl-menu__item {
     color: white;
+    font-size: 14px;
 }
 .mdl-menu__item:hover {
     background-color: #00A3C6;
+}
+.mdl-tooltip {
+    font-size: 12px;
 }
 #bitrateField {
     width: 100px;
@@ -126,6 +132,7 @@ main {
     border-bottom: 1px solid rgba(255, 255, 255, 0.90);
 }
 .mdl-textfield__label {
+    font-size: 1.1rem;
     color: rgba(255, 255, 255, 0.90);
 }
 #naclSpinner {
@@ -195,7 +202,7 @@ main {
 }
 #host-grid .mdl-card__title .mdl-card__title-text {
     width: 100%;
-    font-size: 14px;
+    font-size: 16px;
     padding: 10px 15px;
     background-color: rgba(0,0,0,0.7);
     justify-content: center;
@@ -214,7 +221,7 @@ main {
     position: absolute;
     bottom: 0;
     min-height: 20px;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 300;
     padding: 5px 0;
     width: 100%;
@@ -318,6 +325,10 @@ main {
 }
 .cancel-current .game-title {
     color: #fff;
+}
+#pairingDialogText, #quitAppDialogText,
+#deleteHostDialogText, #terminateMoonlightDialogText {
+    font-size: 1.1rem;
 }
 #continueAddHost {
     width: 48%;
