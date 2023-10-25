@@ -4,7 +4,6 @@ var pairingCert;
 var myUniqueid = '0123456789ABCDEF'; // Use the same UID as other Moonlight clients to allow them to quit each other's games
 var api; // `api` should only be set if we're in a host-specific screen. on the initial screen it should always be null.
 var isInGame = false; // flag indicating whether the game stream started
-var isDialogOpen = false; // track whether the dialog is open
 
 // Called by the common.js module.
 function attachListeners() {
@@ -216,7 +215,7 @@ function pairTo(nvhttpHost, onSuccess, onFailure) {
 
   nvhttpHost.pollServer(function(ret) {
     if (!nvhttpHost.online) {
-      snackbarLog('Failed to connect to ' + nvhttpHost.hostname + '! Ensure that Sunshine is started or GameStream is enabled in GeForce Experience.');
+      snackbarLog('Failed to connect to ' + nvhttpHost.hostname + '! Ensure Sunshine is running on your host PC or GameStream is enabled in GeForce Experience SHIELD settings.');
       console.error('%c[index.js]', 'color: green;', 'Host declared as offline:', nvhttpHost, nvhttpHost.toString()); //Logging both the object and the toString version for text logs
       onFailure();
       return;
@@ -235,7 +234,7 @@ function pairTo(nvhttpHost, onSuccess, onFailure) {
 
     var randomNumber = String("0000" + cryptoRand(10000)).slice(-4);
     var pairingDialog = document.querySelector('#pairingDialog');
-    $('#pairingDialogText').html('Please enter the ' + randomNumber + ' numbers in the Sunshine or GeForce Experience dialog on your host computer.  This dialog will close once the pairing is complete.');
+    $('#pairingDialogText').html('Please enter the following PIN on the target PC:  ' + randomNumber + '<br><br>If your host PC is running Sunshine, navigate to the Sunshine web UI to enter the PIN.<br>Alternatively, navigate to the GeForce Experience (NVIDIA GPUs only) to enter the PIN.<br><br>This dialog will close once the pairing is complete.');
     pairingDialog.showModal();
 
     $('#cancelPairingDialog').off('click');
@@ -328,7 +327,7 @@ function addHost() {
       }
     }.bind(this),
     function(failure) {
-      snackbarLog('Failed to connect to ' + _nvhttpHost.hostname + '! Ensure that Sunshine is started or GameStream is enabled in GeForce Experience.');
+      snackbarLog('Failed to connect to ' + _nvhttpHost.hostname + '! Ensure Sunshine is running on your host PC or GameStream is enabled in GeForce Experience SHIELD settings.');
     }.bind(this));
   });
 }
@@ -406,67 +405,6 @@ function removeClicked(host) {
   });
 }
 
-// Function to create and show the Terminate Moonlight dialog
-function showTerminateMoonlightDialog() {
-  // Find the existing dialog element
-  var terminateMoonlightDialog = document.querySelector('#terminateMoonlightDialog');
-  
-  if (!terminateMoonlightDialog) {
-    // If the dialog element doesn't exist, create it
-    var terminateMoonlightDialog = document.createElement('dialog');
-    terminateMoonlightDialog.id = 'terminateMoonlightDialog';
-    terminateMoonlightDialog.classList.add('mdl-dialog');
-
-    // Create the dialog content
-    terminateMoonlightDialog.innerHTML = `
-      <h3 class="mdl-dialog__title">Exit Moonlight</h3>
-      <div class="mdl-dialog__content">
-        <p id="terminateMoonlightDialogText">
-          Are you sure you want to exit Moonlight?
-        </p>
-      </div>
-      <div class="mdl-dialog__actions">
-        <button type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect" id="cancelTerminateMoonlight">Cancel</button>
-        <button type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect" id="exitTerminateMoonlight">Exit</button>
-      </div>
-    `;
-
-    // Append the dialog to the DOM
-    document.body.appendChild(terminateMoonlightDialog);
-
-    // Initialize the dialog
-    componentHandler.upgradeElements(terminateMoonlightDialog);
-  }
-
-  // Show the dialog and push the view
-  terminateMoonlightDialog.showModal();
-  Navigation.push(Views.TerminateMoonlightDialog);
-
-  // Set the dialog as open
-  isDialogOpen = true;
-
-  // Close the dialog if the Cancel button is pressed
-  $('#cancelTerminateMoonlight').off('click');
-  $('#cancelTerminateMoonlight').on('click', function() {
-    terminateMoonlightDialog.close();
-    // Remove the dialog from the DOM if the dialog is open
-    document.body.removeChild(terminateMoonlightDialog);
-    isDialogOpen = false;
-    Navigation.pop();
-    Navigation.change(Views.Hosts);
-  });
-
-  // Terminate the application if the Exit button is pressed
-  $('#exitTerminateMoonlight').off('click');
-  $('#exitTerminateMoonlight').on('click', function() {
-    terminateMoonlightDialog.close();
-    // Remove the dialog from the DOM if the dialog is open
-    document.body.removeChild(terminateMoonlightDialog);
-    isDialogOpen = false;
-    Navigation.pop();
-    tizen.application.getCurrentApplication().exit();
-  });
-}
 
 // puts the CSS style for current app on the app that's currently running
 // and puts the CSS style for non-current app apps that aren't running
@@ -813,8 +751,8 @@ function stopGameWithConfirmation() {
     api.getAppById(api.currentGame).then(function(currentGame) {
       var quitAppDialog = document.querySelector('#quitAppDialog');
       document.getElementById('quitAppDialogText').innerHTML =
-        ' Are you sure you would like to quit ' +
-        currentGame.title + '?  Unsaved progress will be lost.';
+        ' Are you sure you want to quit ' +
+        currentGame.title + '?  All unsaved data will be lost.';
       quitAppDialog.showModal();
       $('#cancelQuitApp').off('click');
       $('#cancelQuitApp').on('click', function() {
