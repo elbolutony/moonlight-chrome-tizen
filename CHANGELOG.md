@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.0.8
+
+### Added
+- Disabled text selection highlighting application-wide
+
+### Changed
+- Reverted a change and added comments for improved code clarity
+- Optimized control navigation application-wide
+
+### Fixed
+- Refactored code for improved structure and readability
+
 ## v1.0.7
 
 ### Added
