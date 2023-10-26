@@ -1,18 +1,19 @@
-var hosts = {}; // hosts is an associative array of NvHTTP objects, keyed by server UID
-var activePolls = {}; // hosts currently being polled.  An associated array of polling IDs, keyed by server UID
+var hosts = {}; // Hosts is an associative array of NvHTTP objects, keyed by server UID
+var activePolls = {}; // Hosts currently being polled. An associated array of polling IDs, keyed by server UID
 var pairingCert;
 var myUniqueid = '0123456789ABCDEF'; // Use the same UID as other Moonlight clients to allow them to quit each other's games
-var api; // `api` should only be set if we're in a host-specific screen. on the initial screen it should always be null.
-var isInGame = false; // flag indicating whether the game stream started
+var api; // The `api` should only be set if we're in a host-specific screen, on the initial screen it should always be null
+var isInGame = false; // Flag indicating whether the game stream started
+var isDialogOpen = false; // Flag indicating whether the dialog is opened
 
-// Called by the common.js module.
+// Called by the common.js module
 function attachListeners() {
   changeUiModeForNaClLoad();
 
   $('.resolutionMenu li').on('click', saveResolution);
   $('.framerateMenu li').on('click', saveFramerate);
-  $('#bitrateSlider').on('input', updateBitrateField); // input occurs every notch you slide
-  //$('#bitrateSlider').on('change', saveBitrate); //FIXME: it seems not working
+  $('#bitrateSlider').on('input', updateBitrateField); // Input occurs every notch you slide
+  //$('#bitrateSlider').on('change', saveBitrate); //FIXME: It seems not working
   $("#remoteAudioEnabledSwitch").on('click', saveRemoteAudio);
   $("#mouseLockEnabledSwitch").on('click', saveMouseLock);
   $('#optimizeGamesSwitch').on('click', saveOptimize);
@@ -62,7 +63,7 @@ function restoreUiAfterNaClLoad() {
             }
 
             if (hosts[returneMdnsDiscoveredHost.serverUid] != null) {
-              // if we're seeing a host we've already seen before, update it for the current local IP.
+              // If we're seeing a host we've already seen before, update it for the current local IP
               hosts[returneMdnsDiscoveredHost.serverUid].address = returneMdnsDiscoveredHost.address;
               hosts[returneMdnsDiscoveredHost.serverUid].updateExternalAddressIP4();
             } else {
@@ -83,9 +84,9 @@ function beginBackgroundPollingOfHost(host) {
   var el = document.querySelector('#hostgrid-' + host.serverUid)
   if (host.online) {
     el.classList.remove('host-cell-inactive')
-    // The host was already online. Just start polling in the background now.
+    // The host was already online, just start polling in the background now
     activePolls[host.serverUid] = window.setInterval(function() {
-      // every 5 seconds, poll at the address we know it was live at
+      // Every 5 seconds, poll at the address we know it was live at
       host.pollServer(function() {
         if (host.online) {
           el.classList.remove('host-cell-inactive')
@@ -96,7 +97,7 @@ function beginBackgroundPollingOfHost(host) {
     }, 5000);
   } else {
     el.classList.add('host-cell-inactive')
-    // The host was offline, so poll immediately.
+    // The host was offline, so poll immediately
     host.pollServer(function() {
       if (host.online) {
         el.classList.remove('host-cell-inactive')
@@ -106,7 +107,7 @@ function beginBackgroundPollingOfHost(host) {
 
       // Now start background polling
       activePolls[host.serverUid] = window.setInterval(function() {
-        // every 5 seconds, poll at the address we know it was live at
+        // Every 5 seconds, poll at the address we know it was live at
         host.pollServer(function() {
           if (host.online) {
             el.classList.remove('host-cell-inactive')
@@ -120,7 +121,7 @@ function beginBackgroundPollingOfHost(host) {
 }
 
 function stopBackgroundPollingOfHost(host) {
-  console.log('%c[index.js, backgroundPolling]', 'color: green;', 'Stopping background polling of host ' + host.serverUid + '\n', host, host.toString()); //Logging both object (for console) and toString-ed object (for text logs)
+  console.log('%c[index.js, backgroundPolling]', 'color: green;', 'Stopping background polling of host ' + host.serverUid + '\n', host, host.toString()); // Logging both object (for console) and toString-ed object (for text logs)
   window.clearInterval(activePolls[host.serverUid]);
   delete activePolls[host.serverUid];
 }
@@ -149,22 +150,22 @@ function updateBitrateField() {
 }
 
 function moduleDidLoad() {
-  // load the HTTP cert and unique ID if we have one.
+  // load the HTTP cert and unique ID if we have one
   chrome.storage.sync.get('cert', function(savedCert) {
-    if (savedCert.cert != null) { // we have a saved cert
+    if (savedCert.cert != null) { // We have a saved cert
       pairingCert = savedCert.cert;
     }
 
     chrome.storage.sync.get('uniqueid', function(savedUniqueid) {
       // See comment on myUniqueid
-      /*if (savedUniqueid.uniqueid != null) { // we have a saved uniqueid
+      /*if (savedUniqueid.uniqueid != null) { // We have a saved uniqueid
         myUniqueid = savedUniqueid.uniqueid;
       } else {
         myUniqueid = uniqueid();
         storeData('uniqueid', myUniqueid, null);
       }*/
 
-      if (!pairingCert) { // we couldn't load a cert. Make one.
+      if (!pairingCert) { // We couldn't load a cert. Make one.
         console.warn('%c[index.js, moduleDidLoad]', 'color: green;', 'Failed to load local cert. Generating new one');
         sendMessage('makeCert', []).then(function(cert) {
           storeData('cert', cert, null);
@@ -190,7 +191,7 @@ function moduleDidLoad() {
       // load previously connected hosts, which have been killed into an object, and revive them back into a class
       chrome.storage.sync.get('hosts', function(previousValue) {
         hosts = previousValue.hosts != null ? previousValue.hosts : {};
-        for (var hostUID in hosts) { // programmatically add each new host.
+        for (var hostUID in hosts) { // Programmatically add each new host
           var revivedHost = new NvHTTP(hosts[hostUID].address, myUniqueid, hosts[hostUID].userEnteredAddress);
           revivedHost.serverUid = hosts[hostUID].serverUid;
           revivedHost.externalIP = hosts[hostUID].externalIP;
@@ -204,7 +205,7 @@ function moduleDidLoad() {
   });
 }
 
-// pair to the given NvHTTP host object.  Returns whether pairing was successful.
+// Pair to the given NvHTTP host object. Returns whether pairing was successful
 function pairTo(nvhttpHost, onSuccess, onFailure) {
   if (!pairingCert) {
     snackbarLog('ERROR: cert has not been generated yet. Is NaCl initialized?');
@@ -216,7 +217,7 @@ function pairTo(nvhttpHost, onSuccess, onFailure) {
   nvhttpHost.pollServer(function(ret) {
     if (!nvhttpHost.online) {
       snackbarLog('Failed to connect to ' + nvhttpHost.hostname + '! Ensure Sunshine is running on your host PC or GameStream is enabled in GeForce Experience SHIELD settings.');
-      console.error('%c[index.js]', 'color: green;', 'Host declared as offline:', nvhttpHost, nvhttpHost.toString()); //Logging both the object and the toString version for text logs
+      console.error('%c[index.js]', 'color: green;', 'Host declared as offline:', nvhttpHost, nvhttpHost.toString()); // Logging both the object and the toString version for text logs
       onFailure();
       return;
     }
@@ -254,7 +255,7 @@ function pairTo(nvhttpHost, onSuccess, onFailure) {
       } else {
         $('#pairingDialogText').html('Error: failed to pair with ' + nvhttpHost.hostname + '.');
       }
-      console.log('%c[index.js]', 'color: green;', 'Failed API object:', nvhttpHost, nvhttpHost.toString()); //Logging both the object and the toString version for text logs
+      console.log('%c[index.js]', 'color: green;', 'Failed API object:', nvhttpHost, nvhttpHost.toString()); // Logging both the object and the toString version for text logs
       onFailure();
     });
   });
@@ -270,7 +271,7 @@ function hostChosen(host) {
 
   api = host;
   if (!host.paired) {
-    // Still not paired; go to the pairing flow
+    // Still not paired, go to the pairing flow
     pairTo(host, function() {
         showApps(host);
         saveHosts();
@@ -279,24 +280,24 @@ function hostChosen(host) {
         startPollingHosts();
       });
   } else {
-    // When we queried again, it was paired, so show apps.
+    // When we queried again, it was paired, so show apps
     showApps(host);
   }
 }
 
-// the `+` was selected on the host grid.
+// If the `+` was selected on the host grid, then
 // give the user a dialog to input connection details for the PC
 function addHost() {
   var modal = document.querySelector('#addHostDialog');
   modal.showModal();
 
-  // drop the dialog if they cancel
+  // Drop the dialog if they cancel
   $('#cancelAddHost').off('click');
   $('#cancelAddHost').on('click', function() {
     modal.close();
   });
 
-  // try to pair if they continue
+  // Try to pair if they continue
   $('#continueAddHost').off('click');
   $('#continueAddHost').on('click', function() {
     var inputHost = $('#dialogInputHost').val();
@@ -332,7 +333,7 @@ function addHost() {
   });
 }
 
-// host is an NvHTTP object
+// Host is an NvHTTP object
 function addHostToGrid(host, ismDNSDiscovered) {
   var outerDiv = $("<div>", {
     class: 'host-container mdl-card mdl-shadow--4dp',
@@ -371,7 +372,7 @@ function addHostToGrid(host, ismDNSDiscovered) {
   });
   $(outerDiv).append(cell);
   if (!ismDNSDiscovered) {
-    // we don't have the option to delete mDNS hosts.  So don't show it to the user.
+    // We don't have the option to delete mDNS hosts, so don't show it to the user
     $(outerDiv).append(removalButton);
   }
   $('#host-grid').append(outerDiv);
@@ -392,25 +393,82 @@ function removeClicked(host) {
     deleteHostDialog.close();
   });
 
-  // locally remove the hostname/ip from the saved `hosts` array.
-  // note: this does not make the host forget the pairing to us.
-  // this means we can re-add the host, and will still be paired.
+  // locally remove the hostname/ip from the saved `hosts` array
+  // Note: this does not make the host forget the pairing to us
+  // This means we can re-add the host, and will still be paired
   $('#continueDeleteHost').off('click');
   $('#continueDeleteHost').on('click', function() {
     var deleteHostDialog = document.querySelector('#deleteHostDialog');
     $('#host-container-' + host.serverUid).remove();
-    delete hosts[host.serverUid]; // remove the host from the array;
+    delete hosts[host.serverUid]; // Remove the host from the array
     saveHosts();
     deleteHostDialog.close();
   });
 }
 
+// Create and show the Terminate Moonlight dialog
+function showTerminateMoonlightDialog() {
+  // Find the existing dialog element
+  var terminateMoonlightDialog = document.querySelector('#terminateMoonlightDialog');
+  
+  if (!terminateMoonlightDialog) {
+    // If the dialog element doesn't exist, create it
+    var terminateMoonlightDialog = document.createElement('dialog');
+    terminateMoonlightDialog.id = 'terminateMoonlightDialog';
+    terminateMoonlightDialog.classList.add('mdl-dialog');
 
-// puts the CSS style for current app on the app that's currently running
-// and puts the CSS style for non-current app apps that aren't running
+    // Create the dialog content
+    terminateMoonlightDialog.innerHTML = `
+      <h3 class="mdl-dialog__title">Exit Moonlight</h3>
+      <div class="mdl-dialog__content">
+        <p id="terminateMoonlightDialogText">
+          Are you sure you want to exit Moonlight?
+        </p>
+      </div>
+      <div class="mdl-dialog__actions">
+        <button type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect" id="cancelTerminateMoonlight">Cancel</button>
+        <button type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect" id="exitTerminateMoonlight">Exit</button>
+      </div>
+    `;
+
+    // Append the dialog to the DOM
+    document.body.appendChild(terminateMoonlightDialog);
+
+    // Initialize the dialog
+    componentHandler.upgradeElements(terminateMoonlightDialog);
+  }
+
+  // Show the dialog and push the view
+  terminateMoonlightDialog.showModal();
+
+  // Set the dialog as open
+  isDialogOpen = true;
+
+  // Close the dialog if the Cancel button is pressed
+  $('#cancelTerminateMoonlight').off('click');
+  $('#cancelTerminateMoonlight').on('click', function() {
+    terminateMoonlightDialog.close();
+    // Remove the dialog from the DOM if the dialog is open
+    document.body.removeChild(terminateMoonlightDialog);
+    isDialogOpen = false;
+  });
+
+  // Terminate the application if the Exit button is pressed
+  $('#exitTerminateMoonlight').off('click');
+  $('#exitTerminateMoonlight').on('click', function() {
+    terminateMoonlightDialog.close();
+    // Remove the dialog from the DOM if the dialog is open
+    document.body.removeChild(terminateMoonlightDialog);
+    isDialogOpen = false;
+    tizen.application.getCurrentApplication().exit();
+  });
+}
+
+// Puts the CSS style for current app on the app that's currently running
+// and puts the CSS style for non-current app on the apps that aren't running
 // this requires a hot-off-the-host `api`, and the appId we're going to stylize
 // the function was made like this so that we can remove duplicated code, but
-// not do N*N stylizations of the box art, or make the code not flow very well
+// not do N*N stylization of the box art, or make the code not flow very well
 function stylizeBoxArt(freshApi, appIdToStylize) {
   // If the running game is the good one then style it
   var el = document.querySelector("#game-" + appIdToStylize);
@@ -452,17 +510,17 @@ function sortTitles(list, sortOrder) {
   });
 }
 
-// show the app list
+// Show the app list
 function showApps(host) {
-  if (!host || !host.paired) { // safety checking. shouldn't happen.
+  if (!host || !host.paired) { // Safety checking, shouldn't happen
     console.log('%c[index.js, showApps]', 'color: green;', 'Moved into showApps, but `host` did not initialize properly! Failing.');
     return;
   }
-  console.log('%c[index.js, showApps]', 'color: green;', 'Current host object:', host, host.toString()); //Logging both object (for console) and toString-ed object (for text logs)
+  console.log('%c[index.js, showApps]', 'color: green;', 'Current host object:', host, host.toString()); // Logging both object (for console) and toString-ed object (for text logs)
   $('#quitCurrentApp').show();
   $("#gameList .game-container").remove();
 
-  // Show a spinner while the applist loads
+  // Show a spinner while the app list loads
   $('#naclSpinnerMessage').text('Loading apps...');
   $('#naclSpinner').css('display', 'inline-block');
 
@@ -480,13 +538,13 @@ function showApps(host) {
       snackbarLog('Your game list is empty')
       return; // We stop the function right here
     }
-    // if game grid is populated, empty it
+    // If game grid is populated, empty it
     const sortedAppList = sortTitles(appList, 'ASC');
 
     sortedAppList.forEach(function(app) {
       if ($('#game-' + app.id).length === 0) {
-        // double clicking the button will cause multiple box arts to appear.
-        // to mitigate this we ensure we don't add a duplicate.
+        // Double clicking the button will cause multiple box arts to appear
+        // To mitigate this we ensure we don't add a duplicate
         // This isn't perfect: there's lots of RTTs before the logic prevents anything
         var gameCard = document.createElement('div')
         gameCard.id = 'game-' + app.id
@@ -521,7 +579,7 @@ function showApps(host) {
           }
         })
         document.querySelector('#game-grid').appendChild(gameCard);
-        // apply CSS stylization to indicate whether the app is active
+        // Apply CSS stylization to indicate whether the app is active
         stylizeBoxArt(host, app.id);
       }
       var img = new Image();
@@ -546,7 +604,7 @@ function showApps(host) {
   showAppsMode();
 }
 
-// set the layout to the initial mode you see when you open moonlight
+// Set the layout to the initial mode you see when you open Moonlight
 function showHostsAndSettingsMode() {
   console.log('%c[index.js]', 'color: green;', 'Entering "Show apps and hosts" mode');
   $("#main-navigation").show();
@@ -582,20 +640,19 @@ function showAppsMode() {
   isInGame = false;
 
   // FIXME: We want to eventually poll on the app screen but we can't now
-  // because it slows down box art loading and we don't update the UI live
-  // anyway.
+  // because it slows down box art loading and we don't update the UI live anyway.
   stopPollingHosts();
 }
 
-// start the given appID.  if another app is running, offer to quit it.
-// if the given app is already running, just resume it.
+// Start the given appID. If another app is running, offer to quit it.
+// If the given app is already running, just resume it.
 function startGame(host, appID) {
   if (!host || !host.paired) {
     console.error('%c[index.js, startGame]', 'color: green;', 'Attempted to start a game, but `host` did not initialize properly. Host object: ', host);
     return;
   }
 
-  // refresh the server info, because the user might have quit the game.
+  // Refresh the server info, because the user might have quit the game
   host.refreshServerInfo().then(function(ret) {
     host.getAppById(appID).then(function(appToStart) {
 
@@ -615,7 +672,7 @@ function startGame(host, appID) {
           $('#continueQuitApp').on('click', function() {
             console.log('[index.js, startGame]', 'color: green;', 'Stopping game, and closing app dialog, and returning');
             stopGame(host, function() {
-              // please oh please don't infinite loop with recursion
+              // Please, don't infinite loop with recursion
               startGame(host, appID);
             });
             quitAppDialog.close();
@@ -633,7 +690,7 @@ function startGame(host, appID) {
       var optimize = $("#optimizeGamesSwitch").parent().hasClass('is-checked') ? 1 : 0;
       var streamWidth = $('#selectResolution').data('value').split(':')[0];
       var streamHeight = $('#selectResolution').data('value').split(':')[1];
-      // we told the user it was in Mbps. We're dirty liars and use Kbps behind their back.
+      // We told the user it was in Mbps. We're dirty liars and use Kbps behind their back.
       var bitrate = parseInt($("#bitrateSlider").val()) * 1000;
       var mouse_lock_enabled = $("#mouseLockEnabledSwitch").parent().hasClass('is-checked') ? "1" : "0";
       console.log('%c[index.js, startGame]', 'color:green;', 'startRequest:' + host.address + ":" + streamWidth + ":" + streamHeight + ":" + frameRate + ":" + bitrate + ":" + optimize + ":" + mouse_lock_enabled);
@@ -645,7 +702,7 @@ function startGame(host, appID) {
       $('#loadingMessage').text('Starting ' + appToStart.title + '...');
       playGameMode();
 
-      if (host.currentGame == appID) { // if user wants to launch the already-running app, then we resume it.
+      if (host.currentGame == appID) { // If user wants to launch the already-running app, then we resume it
         return host.resumeApp(
           rikey, rikeyid, 0x030002 // Surround channel mask << 16 | Surround channel count
         ).then(function(launchResult) {
@@ -673,7 +730,7 @@ function startGame(host, appID) {
 
       host.launchApp(appID,
         streamWidth + "x" + streamHeight + "x" + frameRate,
-        optimize, // DON'T Allow GFE (0) to optimize game settings, or ALLOW (1) to optimize game settings
+        optimize, // DON'T ALLOW GFE (0) to optimize game settings, or ALLOW (1) to optimize game settings
         rikey, rikeyid,
         remote_audio_enabled, // Play audio locally too?
         0x030002, // Surround channel mask << 16 | Surround channel count
@@ -687,7 +744,7 @@ function startGame(host, appID) {
           var status_message = $root.attr('status_message')
           if (status_code == 4294967295 && status_message == 'Invalid') {
             // Special case handling an audio capture error which GFE doesn't
-            // provide any useful status message for.
+            // provide any useful status message for
             status_code = 418;
             status_message = 'Missing audio capture device. Reinstall GeForce Experience.';
           }
@@ -786,7 +843,7 @@ function stopGame(host, callbackFunction) {
       var appName = runningApp.title;
       snackbarLog('Stopping ' + appName);
       host.quitApp().then(function(ret2) {
-        host.refreshServerInfo().then(function(ret3) { // refresh to show no app is currently running.
+        host.refreshServerInfo().then(function(ret3) { // Refresh to show no app is currently running
           showApps(host);
           if (typeof(callbackFunction) === "function") callbackFunction();
         }, function(failedRefreshInfo2) {
@@ -818,8 +875,7 @@ function saveResolution() {
 }
 
 function saveOptimize() {
-  // MaterialDesignLight uses the mouseup trigger, so we give it some time to change the class name before
-  // checking the new state
+  // MaterialDesignLight uses the mouseup trigger, so we give it some time to change the class name before checking the new state
   setTimeout(function() {
     var chosenOptimize = $("#optimizeGamesSwitch").parent().hasClass('is-checked');
     console.log('%c[index.js, saveOptimize]', 'color: green;', 'Saving optimize state : ' + chosenOptimize);
@@ -834,8 +890,8 @@ function saveFramerate() {
   updateDefaultBitrate();
 }
 
-// storing data in chrome.storage takes the data as an object, and shoves it into JSON to store
-// unfortunately, objects with function instances (classes) are stripped of their function instances when converted to a raw object
+// Storing data in chrome.storage takes the data as an object, and shoves it into JSON to store
+// Unfortunately, objects with function instances (classes) are stripped of their function instances when converted to a raw object,
 // so we cannot forget to revive the object after we load it.
 function saveHosts() {
   storeData('hosts', hosts, null);
@@ -856,8 +912,7 @@ function saveRemoteAudio() {
 }
 
 function saveMouseLock() {
-  // MaterialDesignLight uses the mouseup trigger, so we give it some time to change the class name before
-  // checking the new state
+  // MaterialDesignLight uses the mouseup trigger, so we give it some time to change the class name before checking the new state
   setTimeout(function() {
     var mouseLockState = $("#mouseLockEnabledSwitch").parent().hasClass('is-checked');
     console.log('%c[index.js, saveMouseLock]', 'color: green;', 'Saving mouse lock state : ' + mouseLockState);
@@ -900,7 +955,7 @@ function updateDefaultBitrate() {
     } else { // 2160p (4K), 60 FPS
       $('#bitrateSlider')[0].MaterialSlider.change('80');
     }
-  } else { // unrecognized option. In case someone screws with the JS to add custom resolutions
+  } else { // Unrecognized option. In case someone screws with the JS to add custom resolutions
     $('#bitrateSlider')[0].MaterialSlider.change('10');
   }
 
@@ -910,7 +965,7 @@ function updateDefaultBitrate() {
 
 function onWindowLoad() {
   console.log('%c[index.js]', 'color: green;', 'Moonlight\'s main window loaded');
-  // don't show the game selection div
+  // Don't show the game selection div
   $('#gameSelection').css('display', 'none');
 
   if (chrome.storage) {

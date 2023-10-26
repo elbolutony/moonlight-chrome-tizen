@@ -2,12 +2,10 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-// Javascript module pattern:
-//   see http://en.wikipedia.org/wiki/Unobtrusive_JavaScript#Namespaces
+// JavaScript module pattern, see: https://en.wikipedia.org/wiki/Unobtrusive_JavaScript#Namespaces
 // In essence, we define an anonymous function which is immediately called and
 // returns a new object. The new object contains only the exported definitions;
-// all other definitions in the anonymous function are inaccessible to external
-// code.
+// all other definitions in the anonymous function are inaccessible to external code.
 var common = (function() {
   function createWASMModule() {
     Module = {
@@ -57,7 +55,7 @@ var common = (function() {
    */
   function startsWith(s, prefix) {
     // indexOf would search the entire string, lastIndexOf(p, 0) only checks at
-    // the first index. See: http://stackoverflow.com/a/4579228
+    // the first index, see: https://stackoverflow.com/a/4579228
     return s.lastIndexOf(prefix, 0) === 0;
   }
 

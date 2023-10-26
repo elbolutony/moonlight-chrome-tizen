@@ -6,12 +6,10 @@
 // "Debug" NaCl module.
 var isRelease = true;
 
-// Javascript module pattern:
-//   see http://en.wikipedia.org/wiki/Unobtrusive_JavaScript#Namespaces
+// JavaScript module pattern, see: https://en.wikipedia.org/wiki/Unobtrusive_JavaScript#Namespaces
 // In essence, we define an anonymous function which is immediately called and
 // returns a new object. The new object contains only the exported definitions;
-// all other definitions in the anonymous function are inaccessible to external
-// code.
+// all other definitions in the anonymous function are inaccessible to external code.
 var common = (function() {
 
   function isHostToolchain(tool) {
@@ -214,7 +212,7 @@ var common = (function() {
    */
   function startsWith(s, prefix) {
     // indexOf would search the entire string, lastIndexOf(p, 0) only checks at
-    // the first index. See: http://stackoverflow.com/a/4579228
+    // the first index, see: https://stackoverflow.com/a/4579228
     return s.lastIndexOf(prefix, 0) === 0;
   }
 
@@ -366,7 +364,7 @@ document.addEventListener('DOMContentLoaded', function() {
       loadFunction = window.domContentLoaded;
     }
 
-    // From https://developer.mozilla.org/en-US/docs/DOM/window.location
+    // See: https://developer.mozilla.org/en-US/docs/Web/API/Window/location
     var searchVars = {};
     if (window.location.search.length > 1) {
       var pairs = window.location.search.substr(1).split('&');

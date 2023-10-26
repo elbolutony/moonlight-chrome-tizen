@@ -9,8 +9,8 @@
 // Sample usage:
 //
 // To use remote controller you need 'RemoteController' privilege.
-// For more info visit www.tizen.org/tv/web_device_api/tvinputdevice
-// Example of plaform.js usage for remote controller:
+// For more info visit: https://www.tizen.org/tv/web_device_api/tvinputdevice
+// Example of platform.js usage for remote controller:
 //
 // var remoteHandler = {
 //   initRemoteController: true,
