@@ -81,6 +81,7 @@ const Views = {
     up: function() {
       Navigation.change(Views.HostsNav);
     },
+    down: function() {},
     left: function() {
       this.view.prev();
     },
@@ -96,7 +97,8 @@ const Views = {
       }
     },
     back: function() {
-      showTerminateMoonlightDialog(); /* Show the dialog and push the view */
+      // Show the dialog and push the view
+      showTerminateMoonlightDialog();
     },
     enter: function() {
       mark(this.view.current());
@@ -114,17 +116,21 @@ const Views = {
       'optimizeGamesBtn',
       'framePacingBtn',
       'audioSyncBtn']),
+    up: function() {},
+    down: function() {
+      Navigation.change(Views.Hosts);
+    },
     left: function() {
       this.view.prev();
     },
     right: function() {
       this.view.next();
     },
-    down: function() {
-      Navigation.change(Views.Hosts);
-    },
     accept: function() {
       document.getElementById(this.view.current()).click();
+    },
+    back: function() {
+      Navigation.change(Views.Hosts);
     },
     enter: function() {
       mark(this.view.current());
@@ -138,14 +144,19 @@ const Views = {
       'dialogInputHost',
       'continueAddHost',
       'cancelAddHost']),
+    up: function() {
+      document.getElementById('dialogInputHost').focus();
+    },
+    down: function() {
+      document.getElementById('continueAddHost').focus();
+    },
     left: function() {
       this.view.prev();
+      document.getElementById('continueAddHost').focus();
     },
     right: function() {
       this.view.next();
-    },
-    down: function() {
-        document.getElementById('continueAddHost').click();
+      document.getElementById('cancelAddHost').focus();
     },
     accept: function() {
       document.getElementById(this.view.current()).click();
@@ -164,14 +175,17 @@ const Views = {
     view: new ListView(() => [
       'continueDeleteHost',
       'cancelDeleteHost']),
+    up: function() {},
+    down: function() {
+      document.getElementById('continueDeleteHost').focus();
+    },
     left: function() {
       this.view.prev();
+      document.getElementById('continueDeleteHost').focus();
     },
     right: function() {
       this.view.next();
-    },
-    down: function() {
-        document.getElementById('continueDeleteHost').click();
+      document.getElementById('cancelDeleteHost').focus();
     },
     accept: function() {
       document.getElementById(this.view.current()).click();
@@ -201,6 +215,8 @@ const Views = {
     down: function() {
       this.view.next();
     },
+    left: function() {},
+    right: function() {},
     accept: function() {
       this.view.current().click();
     },
@@ -229,6 +245,8 @@ const Views = {
     down: function() {
       this.view.next();
     },
+    left: function() {},
+    right: function() {},
     accept: function() {
       this.view.current().click();
     },
@@ -244,6 +262,8 @@ const Views = {
   },
   SelectBitrateMenu: {
     isActive: () => isPopupActive('bandwidthMenu'),
+    up: function() {},
+    down: function() {},
     left: function() {
       bitrateSlider.stepDown();
       bitrateSlider.dispatchEvent(new Event('input'));
@@ -263,6 +283,12 @@ const Views = {
   },
   PairingDialog: {
     view: new ListView(() => ['cancelPairingDialog']),
+    up: function() {},
+    down: function() {
+      document.getElementById('cancelPairingDialog').focus();
+    },
+    left: function() {},
+    right: function() {},
     accept: function() {
       document.getElementById(this.view.current()).click();
     },
@@ -280,6 +306,9 @@ const Views = {
     view: new ListView(() => document.getElementById('game-grid').children),
     up: function() {
       Navigation.change(Views.AppsNav);
+    },
+    down: function() {
+      Navigation.change(Views.Apps);
     },
     left: function() {
       this.view.prev();
@@ -304,14 +333,17 @@ const Views = {
     view: new ListView(() => [
       'backIcon',
       'quitCurrentApp']),
+    up: function() {},
     down: function() {
       Navigation.change(Views.Apps);
     },
     left: function() {
       this.view.prev();
+      document.getElementById('backIcon').focus();
     },
     right: function() {
       this.view.next();
+      document.getElementById('quitCurrentApp').focus();
     },
     accept: function() {
       document.getElementById(this.view.current()).click();
@@ -331,14 +363,17 @@ const Views = {
     view: new ListView(() => [
       'continueQuitApp',
       'cancelQuitApp']),
+    up: function() {},
     down: function() {
-      Navigation.change(Views.Apps);
+      document.getElementById('continueQuitApp').focus();
     },
     left: function() {
       this.view.prev();
+      document.getElementById('continueQuitApp').focus();
     },
     right: function() {
       this.view.next();
+      document.getElementById('cancelQuitApp').focus();
     },
     accept: function() {
       document.getElementById(this.view.current()).click();
@@ -357,14 +392,17 @@ const Views = {
     view: new ListView(() => [
       'exitTerminateMoonlight',
       'cancelTerminateMoonlight']),
+    up: function() {},
+    down: function() {
+      document.getElementById('exitTerminateMoonlight').focus();
+    },
     left: function() {
       this.view.prev();
+      document.getElementById('exitTerminateMoonlight').focus();
     },
     right: function() {
       this.view.next();
-    },
-    down: function() {
-      document.getElementById('exitTerminateMoonlight').click();
+      document.getElementById('cancelTerminateMoonlight').focus();
     },
     accept: function() {
       document.getElementById(this.view.current()).click();
