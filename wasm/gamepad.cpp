@@ -21,8 +21,8 @@ enum GamepadAxis {
 
 // Enumeration for gamepad buttons
 enum GamepadButton {
-  A, B, Y, X, /* Change buttons as Y, X, to prevent swapping */
-  LeftShoulder, RightShoulder,
+  A, B, X, Y, /* For unsupported controllers, change buttons to 'Y, X,' to prevent button swapping, otherwise leave as default */
+  LeftBumper, RightBumper,
   LeftTrigger, RightTrigger,
   Back, Play,
   LeftStick, RightStick,
@@ -48,9 +48,9 @@ static short GetButtonFlags(const EmscriptenGamepadEvent& gamepad) {
 
   // Define button mappings
   static const int buttonMasks[] {
-    A_FLAG, B_FLAG, Y_FLAG, X_FLAG, /* Change buttons as Y_FLAG, X_FLAG, to prevent swapping */
+    A_FLAG, B_FLAG, X_FLAG, Y_FLAG, /* For unsupported controllers, change buttons to 'Y_FLAG, X_FLAG,' to prevent button swapping, otherwise leave as default */
     LB_FLAG, RB_FLAG,
-    0 /* LEFT_TRIGGER */, 0 /* RIGHT_TRIGGER */,
+    0 /* LT_FLAG */, 0 /* RT_FLAG */,
     BACK_FLAG, PLAY_FLAG,
     LS_CLK_FLAG, RS_CLK_FLAG,
     UP_FLAG, DOWN_FLAG, LEFT_FLAG, RIGHT_FLAG,
