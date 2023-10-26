@@ -2,6 +2,9 @@ body {
     background-color: #282C38;
     color: #fff;
     font-family: 'Roboto', sans-serif;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
 }
 .page-title {
     font-weight: 300;
